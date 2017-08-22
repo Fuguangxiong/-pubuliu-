@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+       *{
+           font-size:40px;
+       }
+    </style>
+    <script src="jquery-3.1.0.js"></script>
+</head>
+<body>
+<div></div>
+<div></div>
+<div></div><div></div><div></div><div></div><div></div><div></div>
+</body>
+<script>
+  /*  $("div").html("<span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>")
+    $( 'div span' ).css({
+        cursor: 'pointer'
+    });
+    var i = 0;
+    $( 'div span' ).each(function () {
+        this.title = i++;
+    });
+
+    var isclick;
+    $("div span").hover(function(){
+       /!* if(isclick)
+        return;*!/
+        $(this).text("★").prevAll().text("★").end().nextAll().text("☆");
+    },function(){
+
+        if(isclick)
+        return;
+        $(this).text("☆").prevAll().text("☆")
+    }).click(function(){
+        isclick=true;
+       that=this;
+        //自调用函数的this指向window
+        (function () {
+          alert(that.title)
+        })();
+    })*/
+  /*options  {max:5,afterclick:callback}*/
+  $.rater=function(options){
+      var isClick;
+var max=options&&options.max||5;
+      var func=options&&options.afterclick;
+      var innerHTMLstring="";
+      for (var i = 0; i < max; i++) {
+       innerHTMLstring+="<span title="+i+">☆</span>";
+      }
+      /*console.log(1);*/
+      /*console.log(innerHTMLstring)*/
+      $("div").html(innerHTMLstring);
+     /* console.log(2);*/
+      $("div span").hover(function(){
+          if($(this).parent().attr('isClick'))
+          return;
+
+          $(this).text("★").prevAll().text("★").end().nextAll().text("☆");
+      },function(){
+          if($(this).parent().attr('isClick'))
+          return;
+          $(this).text("☆").prevAll().text("☆")
+          /*$( this ).text( '☆' ).siblings().text( '☆' );*/
+
+      }).click(function(){
+          $(this).parent().attr('isClick',true);
+
+         that=this;
+          if(typeof func=="function"){
+              func(that);
+          }
+      })
+  };
+  $.rater({max:10,afterclick:function(){
+      alert(that.title)
+  }});
+</script>
+</html>
